@@ -51,8 +51,16 @@ class product_images(osv.osv):
         if not isinstance(ids, list):
             ids = [ids]
         url = vals.get('url', False)
-        if url != False and ' ' in url:
-            raise osv.except_osv(_('ValidateError'), _('File location may not contain spaces!'))
+        if url != False:
+            if ' ' in url:
+                raise osv.except_osv(_('Product Image Validate Error'),
+                                     _('File location may not contain spaces!'))
+            if len(url) > 128:
+                raise osv.except_osv(_('Product Image Validate Error'),
+                                     _('File location may not contain more than 128 characters!'))
+            if not url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                raise osv.except_osv(_('Product Image Validate Error'),
+                                     _('File location must end with a valid image format extension (.jpg .jpeg .png .gif) !'))
         if vals.get('name', False) and not vals.get('extention', False):
             vals['name'], vals['extention'] = os.path.splitext(vals['name'])
         upd_ids = ids[:]

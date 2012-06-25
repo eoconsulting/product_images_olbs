@@ -152,7 +152,7 @@ class product_images(osv.osv):
         'link':fields.boolean('Link?', help="Images can be linked from files on your file system or remote (Preferred)"),
         'file_db_store':fields.binary('Image stored in database'),
         'file':fields.function(_get_image, fnct_inv=_set_image, type="binary", method=True, filters='*.png,*.jpg,*.gif'),
-        'url':fields.char('File Location', size=250),
+        'url':fields.char('File Location', size=128),
         'comments':fields.text('Comments'),
         'product_id':fields.many2one('product.product', 'Product')
     }

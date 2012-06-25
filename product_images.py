@@ -50,6 +50,9 @@ class product_images(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         if not isinstance(ids, list):
             ids = [ids]
+        url = vals.get('url', False)
+        if url != False and ' ' in url:
+            raise osv.except_osv(_('ValidateError'), _('File location may not contain spaces!'))
         if vals.get('name', False) and not vals.get('extention', False):
             vals['name'], vals['extention'] = os.path.splitext(vals['name'])
         upd_ids = ids[:]

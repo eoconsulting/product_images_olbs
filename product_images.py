@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #########################################################################
 # Copyright (C) 2009  Sharoon Thomas, Open Labs Business solutions      #
 # Copyright (C) 2011 Akretion Sébastien BEAU sebastien.beau@akretion.com#
@@ -42,14 +42,7 @@ class product_images(osv.osv):
                 os.path.isfile(full_path) and os.remove(full_path)
         return super(product_images, self).unlink(cr, uid, ids, context=context)
 
-    def create(self, cr, uid, vals, context=None):
-        if vals.get('name', False) and not vals.get('extention', False):
-            vals['name'], vals['extention'] = os.path.splitext(vals['name'])
-        return super(product_images, self).create(cr, uid, vals, context=context)
-
-    def write(self, cr, uid, ids, vals, context=None):
-        if not isinstance(ids, list):
-            ids = [ids]
+    def _validate_url(self, vals):
         url = vals.get('url', False)
         if url != False:
             if ' ' in url:
@@ -61,6 +54,17 @@ class product_images(osv.osv):
             if not url.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
                 raise osv.except_osv(_('Product Image Validate Error'),
                                      _('File location must end with a valid image format extension (.jpg .jpeg .png .gif) !'))
+
+    def create(self, cr, uid, vals, context=None):
+        self._validate_url(vals)
+        if vals.get('name', False) and not vals.get('extention', False):
+            vals['name'], vals['extention'] = os.path.splitext(vals['name'])
+        return super(product_images, self).create(cr, uid, vals, context=context)
+
+    def write(self, cr, uid, ids, vals, context=None):
+        self._validate_url(vals)
+        if not isinstance(ids, list):
+            ids = [ids]
         if vals.get('name', False) and not vals.get('extention', False):
             vals['name'], vals['extention'] = os.path.splitext(vals['name'])
         upd_ids = ids[:]

@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #########################################################################
 # Copyright (C) 2009  Sharoon Thomas, Open Labs Business solutions      #
 # Copyright (C) 2011 Akretion Sébastien BEAU sebastien.beau@akretion.com#

@@ -159,13 +159,13 @@ class product_images(osv.osv):
         return self.write(cr, uid, id, {'file_db_store' : value}, context=context)
 
     _columns = {
-        'name':fields.char('Image Title', size=100, required=True),
+        'name':fields.char('Image Title', translate=True, size=100, required=True),
         'extention': fields.char('file extention', size=6),
         'link':fields.boolean('Link?', help="Images can be linked from files on your file system or remote (Preferred)"),
         'file_db_store':fields.binary('Image stored in database'),
         'file':fields.function(_get_image, fnct_inv=_set_image, type="binary", method=True, filters='*.png,*.jpg,*.gif'),
         'url':fields.char('File Location', size=128),
-        'comments':fields.text('Comments'),
+        'comments':fields.text('Comments', translate=True),
         'product_id':fields.many2one('product.product', 'Product')
     }
 

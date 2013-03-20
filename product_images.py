@@ -17,7 +17,7 @@
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.  #
 #########################################################################
 from osv import osv, fields
-import base64, urllib
+import base64, urllib2
 from tools.translate import _
 import os
 
@@ -108,9 +108,11 @@ class product_images(osv.osv):
     def get_image(self, cr, uid, id, context=None):
         image = self.browse(cr, uid, id, context=context)
         if image.link:
-            (filename, header) = urllib.urlretrieve(image.url)
-            with open(filename , 'rb') as f:
-                img = base64.b64encode(f.read())
+            try:
+                f = urllib2.urlopen(image.url, data=None, timeout=4)
+            except IOError:
+                return None
+            img = base64.b64encode(f.read())
         else:
             full_path = self._image_path(cr, uid, image, context=context)
             if full_path:

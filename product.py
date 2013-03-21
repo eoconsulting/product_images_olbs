@@ -83,7 +83,7 @@ class product_product(osv.osv):
 
     #This constraint should be by default in openerp 
     _sql_constraints = [('default_code', 'UNIQUE(default_code)',
-                _('Default code should be uniq'))]
+                _('Product default code (Reference) should be unique'))]
 
     def create_image_from_url(self, cr, uid, id, url, image_name=None, context=None):
         (filename, header) = urllib.urlretrieve(url)

@@ -25,11 +25,8 @@ import base64, urllib
 class product_product(osv.osv):
     _inherit = "product.product"
 
-    def copy(self, cr, uid, id, default=None, context=None):
-        if not default:
-            default = {}
+    def copy(self, cr, uid, id, default={}, context={}):
         default.update({
-            'default_code': False,
             'images_ids': False,
         })
         return super(product_product, self).copy(cr, uid, id, default, context=context)
@@ -80,10 +77,6 @@ class product_product(osv.osv):
                             os.rename(old_path,  os.path.join(local_media_repository, vals['default_code']))
                 return res
         return super(product_product, self).write(cr, uid, ids, vals, context=context)
-
-    #This constraint should be by default in openerp 
-    _sql_constraints = [('default_code', 'UNIQUE(default_code)',
-                _('Product default code (Reference) should be unique'))]
 
     def create_image_from_url(self, cr, uid, id, url, image_name=None, context=None):
         (filename, header) = urllib.urlretrieve(url)
